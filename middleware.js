@@ -14,6 +14,18 @@ export default withAuth(
     ) {
       return NextResponse.rewrite(new URL("/Denied", req.url));
     }
+    if (
+      req.nextUrl.pathname.startsWith("/PilotDashboard") &&
+      userRole !== "pilot"
+    ) {
+      return NextResponse.rewrite(new URL("/Denied", req.url));
+    }
+    if (
+      req.nextUrl.pathname.startsWith("/AirlineDashboard") &&
+      userRole !== "airline"
+    ) {
+      return NextResponse.rewrite(new URL("/Denied", req.url));
+    }
 
     if (
       req.nextUrl.pathname.startsWith("/CreateUser") &&
@@ -29,4 +41,4 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/CreateUser", "/CreatePilot"] };
+export const config = { matcher: ["/CreateUser", "/CreatePilot","/PilotDashboard","/AirlineDashboard"] };
