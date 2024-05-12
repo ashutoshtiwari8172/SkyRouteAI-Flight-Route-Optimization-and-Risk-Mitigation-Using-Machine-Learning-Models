@@ -90,12 +90,12 @@ export const options = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) token.role = user.role;
-      if (Pilot) token.role = Pilot.role;
+     
       return token;
     },
     async session({ session, token }) {
       if (session?.user) session.user.role = token.role;
-      if (session?.Pilot) session.Pilot.role = token.role;
+      
       return session;
     },
   },
