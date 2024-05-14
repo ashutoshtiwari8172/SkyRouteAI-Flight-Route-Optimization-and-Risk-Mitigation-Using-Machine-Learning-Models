@@ -2,21 +2,34 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(
-  function middleware(req) {
+  async function middleware(req) {
     console.log(req.nextUrl.pathname);
-    console.log(req.nextauth.token.role);
+    
+    // Fetching user's role
+    const userRole = req.nextauth?.token?.role;
 
     if (
       req.nextUrl.pathname.startsWith("/CreatePilot") &&
-      req.nextauth.token.role != "admin"
+      userRole !== "airline"
+    ) {
+      return NextResponse.rewrite(new URL("/Denied", req.url));
+    }
+    if (
+      req.nextUrl.pathname.startsWith("/PilotDashboard") &&
+      userRole !== "pilot"
+    ) {
+      return NextResponse.rewrite(new URL("/Denied", req.url));
+    }
+    if (
+      req.nextUrl.pathname.startsWith("/AirlineDashboard") &&
+      userRole !== "airline"
     ) {
       return NextResponse.rewrite(new URL("/Denied", req.url));
     }
 
-
     if (
       req.nextUrl.pathname.startsWith("/CreateUser") &&
-      req.nextauth.token.role != "admin"
+      userRole !== "admin"
     ) {
       return NextResponse.rewrite(new URL("/Denied", req.url));
     }
@@ -28,4 +41,4 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/CreateUser", "/CreatePilot"] };
+export const config = { matcher: ["/CreateUser", "/CreatePilot","/PilotDashboard","/AirlineDashboard"] };
