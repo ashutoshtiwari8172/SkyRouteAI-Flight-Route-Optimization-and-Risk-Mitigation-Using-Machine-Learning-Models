@@ -1,6 +1,7 @@
 import AuthProvider from "./(components)/AuthProvider";
 import Nav from "./(components)/Nav";
 import "./globals.css";
+import Footer from "./(components)/Footer";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
         <body className="bg-gray-100">
           <Nav />
           <div className="m-2">{children}</div>
+          <Footer />
         </body>
       </AuthProvider>
     </html>

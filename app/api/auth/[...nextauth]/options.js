@@ -12,7 +12,7 @@ export const options = {
         console.log("Profile GitHub: ", profile);
 
         let userRole = "GitHub User";
-        if (profile?.email == "ashutoshtiwari8172@gmail.com") {
+        if (profile?.email == "avinash.kc3@gmail.com") {
           userRole = "admin";
         }
 
@@ -24,20 +24,7 @@ export const options = {
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_Secret,
     }),
-    // GoogleProvider({
-    //   profile(profile) {
-    //     console.log("Profile Google: ", profile);
 
-    //     let userRole = "Google User";
-    //     return {
-    //       ...profile,
-    //       id: profile.sub,
-    //       role: userRole,
-    //     };
-    //   },
-    //   clientId: process.env.GOOGLE_ID,
-    //   clientSecret: process.env.GOOGLE_Secret,
-    // }),
     CredentialsProvider({
       name: "Credentials",
       
@@ -54,10 +41,7 @@ export const options = {
         },
       },
       async authorize(credentials) {
-         try {
-        //   const foundUser = await User.findOne({ email: credentials.email })
-        //     .lean()
-        //     .exec();
+        try {
         let foundUser = await User.findOne({ email: credentials.email }).lean().exec();
 
         // If user not found in User collection, try finding in Pilot collection
@@ -72,12 +56,16 @@ export const options = {
               foundUser.password
             );
 
-            if (match) {
+            if (match) {  
               console.log("Good Pass");
               delete foundUser.password;
 
-              foundUser["role"] = "Unverified Email";
-              return foundUser;
+              const userRole = foundUser.role; // Fetch the role from the foundUser object
+
+              return {
+                ...foundUser,
+                role: userRole,
+              };
             }
           }
         } catch (error) {
@@ -90,12 +78,10 @@ export const options = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) token.role = user.role;
-      if (Pilot) token.role = Pilot.role;
       return token;
     },
     async session({ session, token }) {
       if (session?.user) session.user.role = token.role;
-      if (session?.Pilot) session.Pilot.role = token.role;
       return session;
     },
   },
