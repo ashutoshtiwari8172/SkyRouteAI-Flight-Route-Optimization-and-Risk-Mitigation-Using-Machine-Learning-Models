@@ -8,26 +8,6 @@ import bcrypt from "bcrypt";
 
 export const options = {
   providers: [
-<<<<<<< HEAD
-    GitHubProvider({
-      profile(profile) {
-        console.log("Profile GitHub: ", profile);
-
-        let userRole = "GitHub User";
-        if (profile?.email == "avinash.kc3@gmail.com") {
-          userRole = "admin";
-        }
-
-        return {
-          ...profile,
-          role: userRole, 
-        };
-      },
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_Secret,
-    }),
-
-=======
     // GitHubProvider({
     //   profile(profile) {
     //     console.log("Profile GitHub: ", profile);
@@ -46,7 +26,6 @@ export const options = {
     //   clientSecret: process.env.GITHUB_Secret,
     // }),
   
->>>>>>> main
     CredentialsProvider({
       name: "Credentials",
       
@@ -65,11 +44,7 @@ export const options = {
       },
       async authorize(credentials) {
         try {
-<<<<<<< HEAD
-        let foundUser = await User.findOne({ email: credentials.email }).lean().exec();
-=======
           let foundUser = await User.findOne({ email: credentials.email }).lean().exec();
->>>>>>> main
 
           // If user not found in User collection, try finding in Pilot collection
           if (!foundUser) {
@@ -91,10 +66,7 @@ export const options = {
               console.log("Good Pass");
               delete foundUser.password;
 
-<<<<<<< HEAD
-=======
               // Fetch role from MongoDB and include it in the returned object
->>>>>>> main
               const userRole = foundUser.role; // Fetch the role from the foundUser object
 
               return {
