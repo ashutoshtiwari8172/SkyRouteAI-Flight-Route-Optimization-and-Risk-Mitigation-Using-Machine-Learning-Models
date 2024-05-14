@@ -1,9 +1,9 @@
-import Pilotform  from "../(components)/PilotForm";
+import PilotForm  from "../(components)/PilotForm";
 
 const CreatePilot = () => {
   return (
     <div>
-      <Pilotform />
+      <PilotForm />
     </div>
   );
 };

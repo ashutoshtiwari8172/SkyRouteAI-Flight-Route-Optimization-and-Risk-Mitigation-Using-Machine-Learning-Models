@@ -27,4 +27,8 @@ const Hero = () => {
   )
 }
 
+<<<<<<< HEAD
 export default Hero
+=======
+export default Hero
+>>>>>>> main
