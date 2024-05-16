@@ -1,6 +1,4 @@
 import AuthProvider from "./(components)/AuthProvider";
-import Footer from "./(components)/Footer";
-import Nav from "./(components)/Nav";
 import Navbar from "./(components)/Navbar";
 import "./globals.css";
 
@@ -17,7 +15,7 @@ export default function RootLayout({ children }) {
           {/* <Nav /> */}
           <Navbar/>
           <div>{children}</div>
-          <Footer />
+          
         </body>
 
       </AuthProvider>
