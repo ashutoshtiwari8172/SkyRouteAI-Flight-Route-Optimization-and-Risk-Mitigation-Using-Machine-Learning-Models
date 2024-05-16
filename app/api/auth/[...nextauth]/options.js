@@ -1,5 +1,3 @@
-
-import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/app/(models)/User";
 import Pilot from "@/app/(models)/Pilot";
@@ -8,25 +6,7 @@ import bcrypt from "bcrypt";
 
 export const options = {
   providers: [
-    // GitHubProvider({
-    //   profile(profile) {
-    //     console.log("Profile GitHub: ", profile);
-
-    //     let userRole = "GitHub User";
-    //     if (profile?.email == "ashutoshtiwari8172@gmail.com") {
-    //       userRole = "admin";
-    //     }
-
-    //     return {
-    //       ...profile,
-    //       role: userRole, 
-    //     };
-    //   },
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_Secret,
-    // }),
-  
-    CredentialsProvider({
+   CredentialsProvider({
       name: "Credentials",
       
       credentials: {
