@@ -1,5 +1,5 @@
-
-import GitHubProvider from "next-auth/providers/github";
+// /app/api/auth/[...nextauth].js
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/app/(models)/User";
 import Pilot from "@/app/(models)/Pilot";
@@ -8,44 +8,19 @@ import bcrypt from "bcrypt";
 
 export const options = {
   providers: [
-    // GitHubProvider({
-    //   profile(profile) {
-    //     console.log("Profile GitHub: ", profile);
-
-    //     let userRole = "GitHub User";
-    //     if (profile?.email == "ashutoshtiwari8172@gmail.com") {
-    //       userRole = "admin";
-    //     }
-
-    //     return {
-    //       ...profile,
-    //       role: userRole, 
-    //     };
-    //   },
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_Secret,
-    // }),
-  
     CredentialsProvider({
       name: "Credentials",
-      
       credentials: {
-        email: {
-          label: "email:",
-          type: "text",
-          placeholder: "your-email",
-          
-        },
-        password: {
-          label: "password:",
-          type: "password",
-          placeholder: "your-password",
-        },
+        email: { label: "Email", type: "text", placeholder: "email@example.com" },
+        password: { label: "Password", type: "password", placeholder: "Password" },
       },
       async authorize(credentials) {
         try {
-          let foundUser = await User.findOne({ email: credentials.email }).lean().exec();
+          let user = await User.findOne({ email: credentials.email }).lean().exec();
+          if (!user) user = await Pilot.findOne({ email: credentials.email }).lean().exec();
+          if (!user) user = await Admin.findOne({ email: credentials.email }).lean().exec();
 
+<<<<<<< HEAD
           // If user not found in User collection, try finding in Pilot collection
           if (!foundUser) {
             foundUser = await Pilot.findOne({ email: credentials.email }).lean().exec();
@@ -73,10 +48,16 @@ export const options = {
                 ...foundUser,
                 role: userRole,
               };
+=======
+          if (user) {
+            const isValidPassword = await bcrypt.compare(credentials.password, user.password);
+            if (isValidPassword) {
+              return { ...user, role: user.role };
+>>>>>>> origin/main
             }
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
         return null;
       },
@@ -84,12 +65,21 @@ export const options = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+      }
       return token;
     },
     async session({ session, token }) {
-      if (session?.user) session.user.role = token.role;
+      if (token) {
+        session.user.role = token.role;
+      }
       return session;
     },
   },
+  pages: {
+    signIn: '/login',
+  },
 };
+
+export default NextAuth(options);
