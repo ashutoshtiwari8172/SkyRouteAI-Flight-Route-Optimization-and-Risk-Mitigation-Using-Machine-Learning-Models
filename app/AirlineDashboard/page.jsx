@@ -2,6 +2,7 @@ import React from 'react'
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
+import AirlineDashboardContent from '../(components)/AirlineDashboardContent';
 
 const AirlineDashboard = async () => {
     const session = await getServerSession(options);
@@ -12,7 +13,7 @@ const AirlineDashboard = async () => {
   
   return (
     <div>
-      Airline Dashboard
+      <AirlineDashboardContent session={session} />
     </div>
   )
 }
