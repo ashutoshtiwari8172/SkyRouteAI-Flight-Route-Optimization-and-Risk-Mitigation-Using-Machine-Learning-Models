@@ -50,11 +50,11 @@ const FlightDetails = () => {
       const fetchAllRouteScores = async () => {
         const scores = await Promise.all(flight.routes.map(async (route) => {
           const transformedRoute = {
-            airline: flight.airlineName,
-            departure_airport: route.originAirport,
-            arrival_airport: route.destinationAirport,
-            route_via: "RouteX", // Replace with actual data if available
-            weather: "Clear", // Replace with actual data if available
+            // airline: flight.airlineName,
+            // departure_airport: route.originAirport,
+            // arrival_airport: route.destinationAirport,
+            // route_via: "RouteX", // Replace with actual data if available
+            weather: "Clear Skies", // Replace with actual data if available
             visibility: route.weatherConditions.visibility,
             turbulence_intensity: route.weatherConditions.turbulenceIntensity,
             wind_shear: route.weatherConditions.windShear,
@@ -62,7 +62,8 @@ const FlightDetails = () => {
             precipitation: route.weatherConditions.precipitation,
             pilot_experience: route.weatherConditions.pilotExperience,
             forecast_accuracy: route.weatherConditions.weatherForecastAccuracy,
-            maintenance_history: "Good", // Replace with actual data if available
+
+            maintenance_history: "High", // Replace with actual data if available
             fuel_consumption: route.flightConditions.fuelConsumption,
             air_traffic_congestion: route.flightConditions.airTrafficCongestion,
             no_step_climbs: route.flightConditions.noStepClimbs,
