@@ -1,5 +1,6 @@
 import AuthProvider from "./(components)/AuthProvider";
 import Navbar from "./(components)/Navbar";
+
 import "./globals.css";
 
 export const metadata = {
@@ -15,7 +16,6 @@ export default function RootLayout({ children }) {
           {/* <Nav /> */}
           <Navbar/>
           <div>{children}</div>
-          
         </body>
 
       </AuthProvider>

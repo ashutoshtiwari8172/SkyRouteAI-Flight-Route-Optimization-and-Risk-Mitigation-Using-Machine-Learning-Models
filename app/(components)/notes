@@ -1,0 +1,18 @@
+<!-- <style type="text/tailwindcss">
+    @layer utitlities{
+        .nav{
+            @apply relatives ml-10 text-gray-500
+            font-mono font-bold tracking-[1px]
+            hover:text-white
+        }
+        .nav:hover::after{
+            @apply content-[''] bg-pink-500 h-[3px] w-[0%] left-0 bottom-[5px]
+            rounded-xl absolute duration-300
+        }
+        .nav:hover::after{
+            @apply w-[100%]
+        }
+    }
+</style> -->
+
+<!-- #2F2F2F #bdbdbd white -->
