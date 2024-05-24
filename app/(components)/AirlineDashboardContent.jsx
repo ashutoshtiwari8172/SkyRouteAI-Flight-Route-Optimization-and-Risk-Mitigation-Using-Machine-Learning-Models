@@ -15,8 +15,8 @@ const DashboardContent = ({ session }) => {
       try {
         const response = await fetch('/api/flightData');
         const data = await response.json();
-        setFlightData(data);
-        setFilteredData(data);
+        setFlightData(Array.isArray(data) ? data : []);
+        setFilteredData(Array.isArray(data) ? data : []);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching flight data:', error);
@@ -83,11 +83,13 @@ const DashboardContent = ({ session }) => {
           <h1 className="text-xl font-semibold mb-4">Airborne Flights</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredData.map((flight) => (
-              <Link href={`/flight/${flight._id}`} key={flight._id.$oid}>
+              <Link href={`/flight/${flight._id}`} key={flight._id}>
                 <div className="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-100">
                   <h2 className="text-lg font-bold mb-2">Flight Number: {flight.flightNumber}</h2>
                   <p><strong>Airline:</strong> {flight.airlineName}</p>
                   <p><strong>Aircraft Type:</strong> {flight.aircraftType}</p>
+                  <p><strong>Origin Airport:</strong> {flight.originAirport}</p>
+                  <p><strong>Destination Airport:</strong> {flight.destinationAirport}</p>
                   <p><strong>Departure Time:</strong> {new Date(flight.departureTime).toLocaleString()}</p>
                   <p><strong>Arrival Time:</strong> {new Date(flight.arrivalTime).toLocaleString()}</p>
                 </div>
