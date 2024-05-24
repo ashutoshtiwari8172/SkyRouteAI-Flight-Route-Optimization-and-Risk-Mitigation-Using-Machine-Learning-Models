@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
-const DashboardContent = ({ session }) => {
+const DashboardContent = () => {
+  const { data: session } = useSession();
   const [flightData, setFlightData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Airborne');
@@ -30,8 +32,10 @@ const DashboardContent = ({ session }) => {
       }
     };
 
-    fetchData();
-  }, []);
+    if (session) {
+      fetchData();
+    }
+  }, [session]);
 
   // Filter flight data based on the search term
   useEffect(() => {
