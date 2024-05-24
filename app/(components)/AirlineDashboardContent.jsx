@@ -9,14 +9,20 @@ const DashboardContent = ({ session }) => {
   const [activeTab, setActiveTab] = useState('Airborne');
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [airborneFlights, setAirborneFlights] = useState([]);
+  const [upcomingFlights, setUpcomingFlights] = useState([]);
+  const [pastFlights, setPastFlights] = useState([]);
 
+  // Fetch flight data from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('/api/flightData');
         const data = await response.json();
-        setFlightData(Array.isArray(data) ? data : []);
-        setFilteredData(Array.isArray(data) ? data : []);
+        const flights = Array.isArray(data) ? data : [];
+        setFlightData(flights);
+        setFilteredData(flights);
+        categorizeFlights(flights);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching flight data:', error);
@@ -27,12 +33,45 @@ const DashboardContent = ({ session }) => {
     fetchData();
   }, []);
 
+  // Filter flight data based on the search term
   useEffect(() => {
     const results = flightData.filter(flight =>
       flight.flightNumber.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(results);
   }, [searchTerm, flightData]);
+
+  // Categorize flights into Airborne, Upcoming, and Past
+  const categorizeFlights = (flights) => {
+    const now = new Date(); // Get the current date and time
+
+    const airborne = [];
+    const upcoming = [];
+    const past = [];
+
+    flights.forEach(flight => {
+      const departureTime = new Date(flight.departureTime); // Parse departure time
+      const arrivalTime = new Date(flight.arrivalTime); // Parse arrival time
+
+      // Check if the flight is airborne
+      if (now >= departureTime && now <= arrivalTime) {
+        airborne.push(flight);
+      }
+      // Check if the flight is upcoming
+      else if (now < departureTime) {
+        upcoming.push(flight);
+      }
+      // Check if the flight is past
+      else if (now > arrivalTime) {
+        past.push(flight);
+      }
+    });
+
+    // Update state with categorized flights
+    setAirborneFlights(airborne);
+    setUpcomingFlights(upcoming);
+    setPastFlights(past);
+  };
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -48,7 +87,7 @@ const DashboardContent = ({ session }) => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Airline Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-4"> {session?.user?.name} Dashboard</h1>
       <div className="tabs mb-4">
         <button
           onClick={() => handleTabClick('Airborne')}
@@ -82,40 +121,66 @@ const DashboardContent = ({ session }) => {
         <div>
           <h1 className="text-xl font-semibold mb-4">Airborne Flights</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredData.map((flight) => (
-              <Link href={`/flight/${flight._id}`} key={flight._id}>
-                <div className="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-100">
-                  <h2 className="text-lg font-bold mb-2">Flight Number: {flight.flightNumber}</h2>
-                  <p><strong>Airline:</strong> {flight.airlineName}</p>
-                  <p><strong>Aircraft Type:</strong> {flight.aircraftType}</p>
-                  <p><strong>Origin Airport:</strong> {flight.originAirport}</p>
-                  <p><strong>Destination Airport:</strong> {flight.destinationAirport}</p>
-                  <p><strong>Departure Time:</strong> {new Date(flight.departureTime).toLocaleString()}</p>
-                  <p><strong>Arrival Time:</strong> {new Date(flight.arrivalTime).toLocaleString()}</p>
-                </div>
-              </Link>
-            ))}
+            {filteredData
+              .filter(flight => airborneFlights.includes(flight))
+              .map(flight => (
+                <Link href={`/flight/${flight._id}`} key={flight._id}>
+                  <div className="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <h2 className="text-lg font-bold mb-2">Flight Number: {flight.flightNumber}</h2>
+                    <p><strong>Airline:</strong> {flight.airlineName}</p>
+                    <p><strong>Aircraft Type:</strong> {flight.aircraftType}</p>
+                    <p><strong>Origin Airport:</strong> {flight.originAirport}</p>
+                    <p><strong>Destination Airport:</strong> {flight.destinationAirport}</p>
+                    <p><strong>Departure Time:</strong> {new Date(flight.departureTime).toLocaleString()}</p>
+                    <p><strong>Arrival Time:</strong> {new Date(flight.arrivalTime).toLocaleString()}</p>
+                  </div>
+                </Link>
+              ))}
           </div>
         </div>
       )}
       {activeTab === 'Upcoming' && (
-        <div className="bg-white shadow-md rounded-lg p-4">
-          <h2 className="text-xl font-semibold mb-2">Upcoming</h2>
-          <ul>
-            <li>Flight 303 - Departure: 12:00 PM</li>
-            <li>Flight 404 - Departure: 2:00 PM</li>
-            {/* Add more upcoming flights here */}
-          </ul>
+        <div>
+          <h1 className="text-xl font-semibold mb-4">Upcoming Flights</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredData
+              .filter(flight => upcomingFlights.includes(flight))
+              .map(flight => (
+                <Link href={`/flight/${flight._id}`} key={flight._id}>
+                  <div className="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <h2 className="text-lg font-bold mb-2">Flight Number: {flight.flightNumber}</h2>
+                    <p><strong>Airline:</strong> {flight.airlineName}</p>
+                    <p><strong>Aircraft Type:</strong> {flight.aircraftType}</p>
+                    <p><strong>Origin Airport:</strong> {flight.originAirport}</p>
+                    <p><strong>Destination Airport:</strong> {flight.destinationAirport}</p>
+                    <p><strong>Departure Time:</strong> {new Date(flight.departureTime).toLocaleString()}</p>
+                    <p><strong>Arrival Time:</strong> {new Date(flight.arrivalTime).toLocaleString()}</p>
+                  </div>
+                </Link>
+              ))}
+          </div>
         </div>
       )}
       {activeTab === 'Past' && (
-        <div className="bg-white shadow-md rounded-lg p-4">
-          <h2 className="text-xl font-semibold mb-2">Past</h2>
-          <ul>
-            <li>Flight 505 - Arrived: 9:00 AM</li>
-            <li>Flight 606 - Arrived: 10:30 AM</li>
-            {/* Add more past flights here */}
-          </ul>
+        <div>
+          <h1 className="text-xl font-semibold mb-4">Past Flights</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredData
+              .filter(flight => pastFlights.includes(flight))
+              .map(flight => (
+                <Link href={`/flight/${flight._id}`} key={flight._id}>
+                  <div className="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-100">
+                    <h2 className="text-lg font-bold mb-2">Flight Number: {flight.flightNumber}</h2>
+                    <p><strong>Airline:</strong> {flight.airlineName}</p>
+                    <p><strong>Aircraft Type:</strong> {flight.aircraftType}</p>
+                    <p><strong>Origin Airport:</strong> {flight.originAirport}</p>
+                    <p><strong>Destination Airport:</strong> {flight.destinationAirport}</p>
+                    <p><strong>Departure Time:</strong> {new Date(flight.departureTime).toLocaleString()}</p>
+                    <p><strong>Arrival Time:</strong> {new Date(flight.arrivalTime).toLocaleString()}</p>
+                  </div>
+                </Link>
+              ))}
+          </div>
         </div>
       )}
     </div>
