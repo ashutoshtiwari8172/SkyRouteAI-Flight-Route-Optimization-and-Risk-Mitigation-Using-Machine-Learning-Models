@@ -30,7 +30,7 @@ const FlightDetails = () => {
 
   const fetchRouteScores = async (route) => {
     try {
-      const response = await fetch('http://35.226.175.122/predict', {
+      const response = await fetch('https://34.16.26.21/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
