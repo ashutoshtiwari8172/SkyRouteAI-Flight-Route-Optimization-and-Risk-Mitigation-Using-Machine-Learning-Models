@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise;
 const PilotSchema = new Schema(
   {
     name: String,
-    pilotId: String,
+    PilotId: String,
     email: String,
     password: String,
     airline: String,
