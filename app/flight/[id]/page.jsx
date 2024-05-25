@@ -32,8 +32,7 @@ const FlightDetails = () => {
   const fetchRouteScores = async (route) => {
     try {
       
-      const response = await fetch('https://flaskapp.qualicio.io/predict', {
-
+      const response = await fetch('http://localhost:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -157,6 +156,9 @@ const FlightDetails = () => {
           <>
             <p className='text-center font-bold'>Combined Score: </p>
             <p className='text-center font-bol'>{route.scores.combined_score}</p>
+            <p className='text-center font-bold mb-10'>Combined Score: </p>
+
+            
             
             <p className='text-center font-bol'>{route.scores.health_score}</p>
           </>
