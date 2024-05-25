@@ -90,7 +90,7 @@ const PilotDashboardContent = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4"> {session?.user?.name} Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-4"> {session?.user?.role} Dashboard</h1>
       <div className="tabs mb-4">
         <button
           onClick={() => handleTabClick('Airborne')}
