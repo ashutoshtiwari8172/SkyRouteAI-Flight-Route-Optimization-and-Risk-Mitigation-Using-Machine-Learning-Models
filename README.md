@@ -1,16 +1,28 @@
-<a href="https://youtu.be/GS_0ZKzrvk0" target="_blank"><img src="https://www.claritycoders.com/_next/image?url=%2FClarityCodersAlpha.png&w=256&q=75" title="Clarity Coders YouTube" /></a>
-# Next Auth Tutorial Video
-- This code was used to teach programmers how to use NextAuth/Auth.js with Next.js.
-- The YouTube Version can be found by clicking on the link above.
-- An FREE! Updated version can be found on Udemy by clicking the link <a href="https://www.udemy.com/course/nextauth-nextjs-cc/?couponCode=04AB59070ACD7781F31C" target="_blank">Free Udemy Course</a>
+# Flight Navigation Optimization System
 
-## What will you learn?
-- Seamless NextAuth / AuthJS Implementation - Learn to effortlessly integrate AuthJS (NextAuth) for streamlined authentication in your NextJS applications.
-- Client Side / Server Side page protection / Middleware - Master client and server side page protection and middleware for robust NextJS application security.
-- Using Built in Providers and creating your own login system - Use GitHub and Google to power login or create a custom MongoDB-based login system from scratch.
-- Role-Based Access Control (RBAC) - Implement fine-grained Role-Based Access Control (RBAC) for precise user authorization.
+## Description
+This project aims to enhance flight navigation by providing optimized flight paths, real-time risk assessments, and alternative route suggestions. The system leverages machine learning models for safety, efficiency, and health monitoring, ensuring safe and efficient navigation.
 
-## Contact!
-- YouTube <a href="https://www.youtube.com/claritycoders" target="_blank">Clarity Coders</a>
-- Chat with me! <a href="https://discord.gg/cAWW5qq" target="_blank">Discord</a>
-- Clarity Website stay up to date with all our course and free coupons <a href="https://www.youtube.com/claritycoders" target="_blank">Clarity Coders Website</a>
+## Features
+- User authentication with NextAuth
+- Role-based access control for Airline and Pilot dashboards
+- Real-time flight path optimization
+- Flight health metrics monitoring
+- Data storage and retrieval using MongoDB
+
+## Technologies Used
+- Next.js
+- NextAuth
+- MongoDB
+- Tailwind CSS
+- Flask
+- Vercel (for frontend hosting)
+- Google Cloud Platform (for backend hosting)
+
+## Architecture
+
+
+![architecture](https://github.com/ashutoshtiwari8172/flightRoute/assets/134742047/c2d49495-9759-4d7d-9e12-2eaba685e3a0)
+
+## Project Structure
+
