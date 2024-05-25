@@ -32,7 +32,8 @@ const FlightDetails = () => {
   const fetchRouteScores = async (route) => {
     try {
       
-      const response = await fetch('http://localhost:5000/predict', {
+      const response = await fetch('https://flaskapp.qualicio.io/predict', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
